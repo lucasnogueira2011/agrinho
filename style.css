@@ -1,1 +1,87 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  background: #f3f1e6;
+  color: #1f2d16;
+  transition: filter 0.2s ease, font-size 0.2s ease;
+}
 
+/* MENU */
+.menu {
+  background: #2e6b1f;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.menu h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.menu a {
+  background: #7ac943;
+  color: white;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.menu a:hover {
+  background: #66a835;
+}
+
+/* PAINEL */
+.painel {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  width: 240px;
+  background: #1f2d16;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.painel h3 {
+  margin-top: 0;
+  color: #a6e37a;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #7ac943;
+}
+
+/* CONTEÚDO */
+.conteudo {
+  padding: 25px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* RODAPÉ */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #2e6b1f;
+  color: white;
+  margin-top: 40px;
+}
