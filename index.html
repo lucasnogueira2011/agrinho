@@ -1,244 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Controle de Brilho e Fonte</title>
 
-import 'package:flutter/material.dart';
-import 'package:screen_brightness/screen_brightness.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-void main() {
-  runApp(const AgroForteApp());
-}
-
-class AgroForteApp extends StatelessWidget {
-  const AgroForteApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'AgroForte',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const AgroForteHome(),
-    );
-  }
-}
-
-class AgroForteHome extends StatefulWidget {
-  const AgroForteHome({super.key});
-
-  @override
-  State<AgroForteHome> createState() => _AgroForteHomeState();
-}
-
-class _AgroForteHomeState extends State<AgroForteHome> {
-  double brilho = 0.5;
-  double tamanhoFonte = 24;
-
-  @override
-  void initState() {
-    super.initState();
-    carregarBrilho();
-  }
-
-  Future<void> carregarBrilho() async {
-    try {
-      brilho =
-          await ScreenBrightness().currentApplicationScreenBrightness;
-      setState(() {});
-    } catch (_) {}
-  }
-
-  Future<void> alterarBrilho(double valor) async {
-    try {
-      await ScreenBrightness().setApplicationScreenBrightness(valor);
-      setState(() {
-        brilho = valor;
-      });
-    } catch (_) {}
-  }
-
-  Future<void> abrirSite() async {
-    final Uri url = Uri.parse(
-      'https://www.agroforte.com.br',
-    );
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      background: #ffffff;
+      color: #000000;
+      transition: filter 0.2s ease, font-size 0.2s ease;
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green.shade50,
-      appBar: AppBar(
-        title: const Text('🌱 AgroForte'),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Icon(
-              Icons.agriculture,
-              color: Colors.green,
-              size: 100,
-            ),
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
 
-            const SizedBox(height: 15),
+    .conteudo {
+      padding: 20px;
+    }
 
-            Text(
-              'Bem-vindo ao AgroForte',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: tamanhoFonte,
-                fontWeight: FontWeight.bold,
-                color: Colors.green.shade900,
-              ),
-            ),
+    .painel {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #34495e;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      width: 220px;
+    }
 
-            const SizedBox(height: 30),
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
 
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Controle de Brilho',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+    input[type="range"] {
+      width: 100%;
+    }
 
-                    Text(
-                      '${(brilho * 100).toInt()}%',
-                    ),
+    .caixa {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
 
-                    Slider(
-                      value: brilho,
-                      min: 0,
-                      max: 1,
-                      onChanged: alterarBrilho,
-                    ),
+<body>
 
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            alterarBrilho(
-                              (brilho - 0.1)
-                                  .clamp(0.0, 1.0),
-                            );
-                          },
-                          child: const Text('Diminuir'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            alterarBrilho(
-                              (brilho + 0.1)
-                                  .clamp(0.0, 1.0),
-                            );
-                          },
-                          child: const Text('Aumentar'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+  <header>
+    <h1>Meu Site Interativo</h1>
+  </header>
 
-            const SizedBox(height: 20),
+  <div class="painel">
+    <label for="brilho">Brilho</label>
+    <input type="range" id="brilho" min="50" max="150" value="100">
 
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Controle de Fonte',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+    <label for="fonte">Tamanho da fonte</label>
+    <input type="range" id="fonte" min="12" max="40" value="16">
+  </div>
 
-                    Text(
-                      'Tamanho: ${tamanhoFonte.toInt()} px',
-                    ),
+  <div class="conteudo">
+    <div class="caixa">
+      <h2>Bem-vindo!</h2>
+      <p>
+        Este site permite ajustar o brilho da tela e o tamanho da fonte em tempo real.
+      </p>
+    </div>
+  </div>
 
-                    Slider(
-                      value: tamanhoFonte,
-                      min: 12,
-                      max: 50,
-                      onChanged: (valor) {
-                        setState(() {
-                          tamanhoFonte = valor;
-                        });
-                      },
-                    ),
+  <script>
+    const brilho = document.getElementById("brilho");
+    const fonte = document.getElementById("fonte");
 
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              tamanhoFonte =
-                                  (tamanhoFonte - 2)
-                                      .clamp(12, 50);
-                            });
-                          },
-                          child: const Text('A-'),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              tamanhoFonte =
-                                  (tamanhoFonte + 2)
-                                      .clamp(12, 50);
-                            });
-                          },
-                          child: const Text('A+'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+    brilho.addEventListener("input", () => {
+      document.body.style.filter = `brightness(${brilho.value}%)`;
+    });
 
-            const SizedBox(height: 30),
+    fonte.addEventListener("input", () => {
+      document.body.style.fontSize = fonte.value + "px";
+    });
+  </script>
 
-            ElevatedButton.icon(
-              icon: const Icon(Icons.link),
-              label: const Text(
-                'Acessar Portal AgroForte',
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                minimumSize: const Size(
-                  double.infinity,
-                  55,
-                ),
-              ),
-              onPressed: abrirSite,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+</body>
+</html>
